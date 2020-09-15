@@ -79,6 +79,10 @@ func newEnv(ctx context.Context, ep []string, namespace string, ttl int64) (env 
 	return
 }
 
+func Client() *clientv3.Client {
+	return defaultEnv.Client()
+}
+
 func InitEnv(ctx context.Context, ep []string, namespace string, ttl int64) (err error) {
 	if defaultEnv != nil {
 		log.Fatal("etcd env has been initialized")
@@ -188,6 +192,10 @@ func (env *Env) CountPrefix(ctx context.Context, prefix string, opts ...clientv3
 
 func (env *Env) Watch(ctx context.Context, prefix string, opts ...clientv3.OpOption) clientv3.WatchChan {
 	return env.cli.Watch(ctx, prefix, opts...)
+}
+
+func (env *Env) Client() *clientv3.Client {
+	return env.cli
 }
 
 func Get(ctx context.Context, prefix string, value interface{}) error {
